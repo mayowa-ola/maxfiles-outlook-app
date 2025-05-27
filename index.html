@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Your App Integration</title>
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
+</head>
+<body>
+    <div id="content">
+        <h3>Process Email</h3>
+        <button id="processEmail">Send to Application</button>
+        <div id="status"></div>
+    </div>
+
+    <script>
+        Office.onReady(() => {
+            document.getElementById('processEmail').onclick = processCurrentEmail;
+        });
+
+        async function processCurrentEmail() {
+            const statusDiv = document.getElementById('status');
+            statusDiv.innerHTML = 'Processing...';
+
+            try {
+                // Get current email item
+                const item = Office.context.mailbox.item;
+                
+                // Extract email data
+                const emailData = {
+                    subject: item.subject,
+                    sender: item.sender ? item.sender.emailAddress : '',
+                    recipients: item.to ? item.to.map(r => r.emailAddress) : [],
+                    dateTimeCreated: item.dateTimeCreated,
+                    itemId: item.itemId
+                };
+
+                // Get email body
+                item.body.getAsync(Office.CoercionType.Html, async (result) => {
+                    if (result.status === Office.AsyncResultStatus.Succeeded) {
+                        emailData.body = result.value;
+                        
+                        // Get attachments
+                        const attachments = await getAttachments(item);
+                        emailData.attachments = attachments;
+                        
+                        // Send to your Laravel API
+                        await sendToAPI(emailData);
+                        
+                        statusDiv.innerHTML = 'Email processed successfully!';
+                    } else {
+                        statusDiv.innerHTML = 'Error reading email body';
+                    }
+                });
+
+            } catch (error) {
+                console.error('Error processing email:', error);
+                statusDiv.innerHTML = 'Error processing email';
+            }
+        }
+
+        async function getAttachments(item) {
+            return new Promise((resolve) => {
+                if (!item.attachments || item.attachments.length === 0) {
+                    resolve([]);
+                    return;
+                }
+
+                const attachmentPromises = item.attachments.map(attachment => {
+                    return new Promise((resolveAttachment) => {
+                        item.getAttachmentContentAsync(attachment.id, (result) => {
+                            if (result.status === Office.AsyncResultStatus.Succeeded) {
+                                resolveAttachment({
+                                    id: attachment.id,
+                                    name: attachment.name,
+                                    contentType: attachment.contentType,
+                                    size: attachment.size,
+                                    content: result.value.content,
+                                    format: result.value.format
+                                });
+                            } else {
+                                resolveAttachment(null);
+                            }
+                        });
+                    });
+                });
+
+                Promise.all(attachmentPromises).then(results => {
+                    resolve(results.filter(r => r !== null));
+                });
+            });
+        }
+
+        async function sendToAPI(emailData) {
+            const response = await fetch('https://be.demo.maxfiles.com.ng/api/process-email', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer your-api-token'
+                },
+                body: JSON.stringify(emailData)
+            });
+
+            if (!response.ok) {
+                throw new Error('API request failed');
+            }
+
+            return response.json();
+        }
+    </script>
+</body>
+</html>
