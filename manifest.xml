@@ -9,8 +9,8 @@
   <Version>1.0.0.0</Version>
   <ProviderName>MaxFiles</ProviderName>
   <DefaultLocale>en-US</DefaultLocale>
-  <DisplayName DefaultValue="Your App Integration"/>
-  <Description DefaultValue="Integrate emails with your application"/>
+  <DisplayName DefaultValue="MaxFiles App Integration"/>
+  <Description DefaultValue="Send files to MaxFiles via emails"/>
   
   <Hosts>
     <Host Name="Mailbox"/>
@@ -47,6 +47,11 @@
                     <Title resid="TaskpaneButton.Label"/>
                     <Description resid="TaskpaneButton.Tooltip"/>
                   </Supertip>
+                  <Icon>
+                    <bt:Image size="16" DefaultValue="https://www.salesunbox.africa/assets/salesunbox-logo-c5fd1113.png"/>
+                    <bt:Image size="32" DefaultValue="https://www.salesunbox.africa/assets/salesunbox-logo-c5fd1113.png"/>
+                    <bt:Image size="80" DefaultValue="https://www.salesunbox.africa/assets/salesunbox-logo-c5fd1113.png"/>
+                  </Icon>
                   <Action xsi:type="ShowTaskpane">
                     <TaskpaneId>ButtonId1</TaskpaneId>
                     <SourceLocation DefaultValue="https://mayowa-ola.github.io/maxfiles-outlook-app/addin.html"/>
@@ -60,6 +65,11 @@
     </Hosts>
     
     <Resources>
+      <bt:Images>
+        <bt:Image id="Icon.16x16" DefaultValue="https://www.salesunbox.africa/assets/salesunbox-logo-c5fd1113.png"/>
+        <bt:Image id="Icon.32x32" DefaultValue="https://www.salesunbox.africa/assets/salesunbox-logo-c5fd1113.png"/>
+        <bt:Image id="Icon.80x80" DefaultValue="https://www.salesunbox.africa/assets/salesunbox-logo-c5fd1113.png"/>
+      </bt:Images>
       <bt:Urls>
         <bt:Url id="Taskpane.Url" DefaultValue="https://mayowa-ola.github.io/maxfiles-outlook-app/addin.html"/>
       </bt:Urls>
