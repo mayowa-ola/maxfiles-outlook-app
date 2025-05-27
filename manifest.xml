@@ -25,7 +25,7 @@
   <FormSettings>
     <Form xsi:type="ItemRead">
       <DesktopSettings>
-        <SourceLocation DefaultValue="https://your-domain.com/outlook-addin/"/>
+        <SourceLocation DefaultValue="https://mayowa-ola.github.io/maxfiles-outlook-app/"/>
         <RequestedHeight>250</RequestedHeight>
       </DesktopSettings>
     </Form>
@@ -54,7 +54,7 @@
                   </Icon>
                   <Action xsi:type="ShowTaskpane">
                     <TaskpaneId>ButtonId1</TaskpaneId>
-                    <SourceLocation DefaultValue="https://your-domain.com/outlook-addin/"/>
+                    <SourceLocation DefaultValue="https://mayowa-ola.github.io/maxfiles-outlook-app/"/>
                   </Action>
                 </Control>
               </Group>
@@ -71,7 +71,7 @@
         <bt:Image id="Icon.80x80" DefaultValue="https://your-domain.com/assets/icon-80.png"/>
       </bt:Images>
       <bt:Urls>
-        <bt:Url id="Taskpane.Url" DefaultValue="https://your-domain.com/outlook-addin/"/>
+        <bt:Url id="Taskpane.Url" DefaultValue="https://mayowa-ola.github.io/maxfiles-outlook-app/"/>
       </bt:Urls>
       <bt:ShortStrings>
         <bt:String id="GroupLabel" DefaultValue="Your App"/>
